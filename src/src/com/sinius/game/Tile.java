@@ -8,6 +8,7 @@ import java.awt.Color;
 public class Tile {
 
     private int amount = 0;
+    private boolean wasMerged;
 
     public Tile() {
     }
@@ -63,5 +64,13 @@ public class Tile {
         return "Tile{" +
                 "amount=" + amount +
                 '}';
+    }
+
+    public void setWasMerged(boolean wasMerged) {
+        this.wasMerged = wasMerged;
+    }
+
+    public boolean wasMerged() {
+        return wasMerged;
     }
 }

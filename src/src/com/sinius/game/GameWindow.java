@@ -61,11 +61,13 @@ public class GameWindow extends JPanel implements Runnable, KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        game.onKeyPress(e.getKeyCode());
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        game.onKeyPress(e.getKeyCode());
+
     }
 
     @Override
@@ -73,7 +75,7 @@ public class GameWindow extends JPanel implements Runnable, KeyListener {
         while(true){
             this.repaint();
             try {
-                Thread.sleep(1000/10);
+                Thread.sleep(1000/30);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

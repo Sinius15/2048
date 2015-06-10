@@ -23,33 +23,58 @@ public class Grid {
         return tiles[x][y];
     }
 
+    public Tile getTile(Point p){
+        return tiles[p.x][p.y];
+    }
+
+    public void resetMerges(){
+        for(int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                getTile(x, y).setWasMerged(false);
+            }
+        }
+    }
+
     public void setTile(int x, int y, Tile tile){
         this.tiles[x][y] = tile;
     }
 
     public Tile getRandomAvalableTile(){
-        ArrayList<Tile> avalable = getAvailableCells();
-        if(avalable.size() == 0)
+        ArrayList<Tile> available = getAvailableCells();
+        if(available.size() == 0)
             return null;
-        return avalable.get((int) Math.floor(Math.random()*avalable.size()));
+        return available.get((int) Math.floor(Math.random()*available.size()));
     }
 
-    public void addRandomTile(){
+    public boolean addRandomTile(){
         int value = Math.random() < 0.9 ? 2 : 4;
-        getRandomAvalableTile().setAmount(value);
+        Tile tile = getRandomAvalableTile();
+        if(tile == null)
+            return false;
+        tile.setAmount(value);
+        return true;
     }
 
     private ArrayList<Tile> getAvailableCells() {
-        ArrayList<Tile> avalable = new ArrayList<>();
+        ArrayList<Tile> available = new ArrayList<>();
         for(int x = 0; x < SIZE; x++){
             for(int y = 0; y < SIZE; y++){
                 Tile tile = getTile(x, y);
                 if(tile.getAmount() == 0)
-                    avalable.add(tile);
+                    available.add(tile);
             }
         }
-        return avalable;
+        return available;
     }
 
 
+    public static boolean isPointValid(Point point) {
+        return !(point.getX() < 0 || point.getX() >= SIZE || point.getY() < 0 || point.getY() >= SIZE);
+    }
+
+    public void turn(Point pointA, Point pointB) {
+        Tile keeper = getTile(pointA);
+        tiles[pointA.x][pointA.y] = getTile(pointB);
+        tiles[pointB.x][pointB.y] = keeper;
+    }
 }
