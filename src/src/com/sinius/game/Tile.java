@@ -1,6 +1,7 @@
 package com.sinius.game;
 
-import java.awt.Color;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Created by Sinius on 10-6-2015.
@@ -11,10 +12,6 @@ public class Tile {
     private boolean wasMerged;
 
     public Tile() {
-    }
-
-    public Tile(int amount) {
-        this.amount = amount;
     }
 
     public int getAmount() {
@@ -49,6 +46,37 @@ public class Tile {
             case 2048: return new Color(0xedc22e);
         }
         return new Color(0x3c3a32);
+    }
+
+    public void draw(Rectangle location, Graphics g, int padding){
+        int wp = padding+ location.width;
+        int hp = padding+ location.height;
+
+        String txt = getAmount()+"";
+
+        g.setFont(new Font("Arial", Font.PLAIN, calcFontSize(txt)));
+
+        Graphics2D g2d = (Graphics2D) g;
+        FontMetrics fm = g2d.getFontMetrics();
+        Rectangle2D r = fm.getStringBounds(txt, g2d);
+        int x = (int) ((location.getWidth() - (int) r.getWidth()) / 2);
+        int y = (int) ((location.getHeight() - (int) r.getHeight()) / 2 + fm.getAscent());
+
+        g.setColor(getBackgroundColor());
+        g.fillRoundRect(padding+location.x*wp, padding+location.y*hp, 100, 100, 10, 10);
+
+
+        g.setColor(getForegroundColor());
+        g.drawString(txt, padding+x+location.x*wp, padding+y+location.y*hp-3);
+    }
+
+    private static int calcFontSize(String txt){
+        switch (txt.length()){
+            case 1: return 60;
+            case 2: return 50;
+            case 3: return 40;
+        }
+        return 30;
     }
 
 

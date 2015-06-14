@@ -2,17 +2,18 @@ package com.sinius.game;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by Sinius on 10-6-2015.
  */
-public class GameWindow extends JPanel implements Runnable, KeyListener {
+public class GameWindow extends JPanel implements Runnable, KeyListener, MouseListener {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private JFrame frame;
     private Game game;
     private Grid grid;
@@ -30,6 +31,7 @@ public class GameWindow extends JPanel implements Runnable, KeyListener {
 
         this.setFocusable(true);
         this.addKeyListener(this);
+        this.addMouseListener(this);
 
         this.game = game;
         this.grid = grid;
@@ -43,19 +45,15 @@ public class GameWindow extends JPanel implements Runnable, KeyListener {
 
         g.setColor(background);
         g.fillRect(0, 0, getWidth(), getHeight());
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 60));
 
         for(int x = 0; x < Grid.SIZE; x++) {
             for (int y = 0; y < Grid.SIZE; y++) {
-                Tile tile = grid.getTile(x, y);
-                g.setColor(tile.getBackgroundColor());
-                g.fillRect(15+x*115, 15+y*115, 100, 100);
-
-                g.setColor(tile.getForegroundColor());
-                g.drawString(tile.getAmount()+"", 45+x*115, 85+y*115);
+                grid.getTile(x, y).draw(new Rectangle(x, y, 100, 100), g, 15);
             }
         }
     }
+
+
 
     @Override
     public void keyTyped(KeyEvent e) {}
@@ -66,9 +64,7 @@ public class GameWindow extends JPanel implements Runnable, KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) { }
 
     @Override
     public void run() {
@@ -80,5 +76,30 @@ public class GameWindow extends JPanel implements Runnable, KeyListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println(e.getLocationOnScreen());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
