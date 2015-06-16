@@ -11,11 +11,13 @@ public class Game {
     GameWindow window;
     Grid grid;
     boolean finished = false;
+    Simulator simulator;
 
     public Game() {
         this.grid = new Grid();
         this.grid.addRandomTile();
         this.grid.addRandomTile();
+        simulator = new Simulator();
 
         this.window = new GameWindow(this.grid, this);
     }
@@ -23,16 +25,18 @@ public class Game {
     public void onKeyPress(int keyCode) {
         if(finished)
             return;
-        Point vector = null;
+        Move move = null;
+        System.out.println(keyCode);
         switch (keyCode){
-            case 38: vector = new Point(0, -1); break;
-            case 39: vector = new Point(1, 0); break;
-            case 40: vector = new Point(0, 1); break;
-            case 37: vector = new Point(-1, 0); break;
+            case 38: move = Move.UP; break;
+            case 39: move = Move.RIGHT; break;
+            case 40: move = Move.DOWN; break;
+            case 37: move = Move.LEFT; break;
+            case 32: move = simulator.simulate(grid.clone());
         }
-        if(vector == null)
+        if(move == null)
             return;
-        if(grid.doMove(vector)) {
+        if(grid.doMove(move)) {
             finished = true;
             JOptionPane.showMessageDialog(null, "Congratulations!");
         }
